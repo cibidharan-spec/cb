@@ -1,25 +1,72 @@
-import { Composition, staticFile } from "remotion";
+import { AbsoluteFill, Composition, Sequence, staticFile } from "remotion";
 import { Scene, myCompSchema } from "./Scene";
 import { getMediaMetadata } from "./helpers/get-media-metadata";
+import { Scene01Drop } from "./scenes/Scene01Drop";
+import { Scene02AlwaysOn } from "./scenes/Scene02AlwaysOn";
+import { Scene03SelfHeal } from "./scenes/Scene03SelfHeal";
 
-// Welcome to the Remotion Three Starter Kit!
-// Two compositions have been created, showing how to use
-// the `ThreeCanvas` component and the `useVideoTexture` hook.
+// Chronixel "Glass Command Deck" — Claude Agents intro, scenes 1–3.
+const W = 1920;
+const H = 1080;
+const FPS = 30;
 
-// You can play around with the example or delete everything inside the canvas.
+// Beat durations (frames @30fps), from scenes/claude-agents.md
+const S1 = 120; // 0.00–4.00
+const S2 = 157; // 4.00–9.24
+const S3 = 188; // 9.24–15.52
 
-// Remotion Docs:
-// https://remotion.dev/docs
-
-// @remotion/three Docs:
-// https://remotion.dev/docs/three
-
-// React Three Fiber Docs:
-// https://docs.pmnd.rs/react-three-fiber/getting-started/introduction
+const Intro123: React.FC = () => (
+  <AbsoluteFill style={{ backgroundColor: "#07080B" }}>
+    <Sequence durationInFrames={S1}>
+      <Scene01Drop />
+    </Sequence>
+    <Sequence from={S1} durationInFrames={S2}>
+      <Scene02AlwaysOn />
+    </Sequence>
+    <Sequence from={S1 + S2} durationInFrames={S3}>
+      <Scene03SelfHeal />
+    </Sequence>
+  </AbsoluteFill>
+);
 
 export const RemotionRoot: React.FC = () => {
   return (
     <>
+      {/* ---- Chronixel: Claude Agents intro ---- */}
+      <Composition
+        id="Chronixel-Scene1-Drop"
+        component={Scene01Drop}
+        durationInFrames={S1}
+        fps={FPS}
+        width={W}
+        height={H}
+      />
+      <Composition
+        id="Chronixel-Scene2-AlwaysOn"
+        component={Scene02AlwaysOn}
+        durationInFrames={S2}
+        fps={FPS}
+        width={W}
+        height={H}
+      />
+      <Composition
+        id="Chronixel-Scene3-SelfHeal"
+        component={Scene03SelfHeal}
+        durationInFrames={S3}
+        fps={FPS}
+        width={W}
+        height={H}
+      />
+      <Composition
+        id="Chronixel-Intro-1to3"
+        component={Intro123}
+        durationInFrames={S1 + S2 + S3}
+        fps={FPS}
+        width={W}
+        height={H}
+      />
+
+      {/* ---- Original React Three Fiber starter composition ---- */}
       <Composition
         id="Scene"
         component={Scene}
