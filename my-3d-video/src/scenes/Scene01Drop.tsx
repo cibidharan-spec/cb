@@ -60,12 +60,12 @@ export const Scene01Drop: React.FC = () => {
         <Glass
           hot
           style={{
-            padding: "34px 44px",
-            width: 980,
+            padding: "30px 42px",
+            maxWidth: 1500,
             opacity: cardIn,
             scale: String(0.94 + cardIn * 0.06),
             translate: `0px ${(1 - cardIn) * 24}px`,
-            display: "flex",
+            display: "inline-flex",
             alignItems: "center",
             gap: 22,
           }}

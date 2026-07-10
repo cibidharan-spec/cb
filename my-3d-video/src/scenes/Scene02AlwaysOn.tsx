@@ -88,62 +88,63 @@ export const Scene02AlwaysOn: React.FC = () => {
             <Glass
               hot
               style={{
-                width: 360,
-                height: 250,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
+                width: 440,
+                height: 264,
                 position: "relative",
               }}
             >
-              <Tag
-                tone="neutral"
-                style={{ position: "absolute", top: 18, left: 18 }}
-              >
-                ☁ Cloud
-              </Tag>
-              {/* running chip */}
+              {/* header row: Cloud (left) · Running (right) — never overlap */}
               <div
                 style={{
                   position: "absolute",
-                  top: 18,
-                  right: 18,
+                  top: 20,
+                  left: 22,
+                  right: 22,
                   display: "flex",
+                  justifyContent: "space-between",
                   alignItems: "center",
-                  gap: 10,
-                  fontFamily: poppins,
-                  fontWeight: 600,
-                  fontSize: C.type.tiny,
-                  letterSpacing: C.tracking.wide,
-                  textTransform: "uppercase",
-                  color: C.color.success,
                 }}
               >
+                <Tag tone="neutral">☁ Cloud</Tag>
                 <div
                   style={{
-                    width: 12,
-                    height: 12,
-                    borderRadius: "50%",
-                    background: C.color.success,
-                    boxShadow: `0 0 ${8 + runningPulse * 10}px ${C.color.successGlow}`,
-                    opacity: 0.55 + runningPulse * 0.45,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 10,
+                    fontFamily: poppins,
+                    fontWeight: 600,
+                    fontSize: C.type.tiny,
+                    letterSpacing: C.tracking.wide,
+                    textTransform: "uppercase",
+                    color: C.color.success,
                   }}
-                />
-                Running
+                >
+                  <div
+                    style={{
+                      width: 12,
+                      height: 12,
+                      borderRadius: "50%",
+                      background: C.color.success,
+                      boxShadow: `0 0 ${8 + runningPulse * 10}px ${C.color.successGlow}`,
+                      opacity: 0.55 + runningPulse * 0.45,
+                    }}
+                  />
+                  Running
+                </div>
               </div>
 
-              {/* orbiting nodes around core */}
+              {/* orbit + core, centered at (220, 162) below the header */}
               {ORBIT.map((base, i) => {
                 const a = ((base + frame * 1.6) * Math.PI) / 180;
-                const rx = 110;
-                const ry = 62;
+                const rx = 122;
+                const ry = 52;
                 return (
                   <div
                     key={i}
                     style={{
                       position: "absolute",
-                      left: 180 + Math.cos(a) * rx,
-                      top: 125 + Math.sin(a) * ry,
+                      left: 220 + Math.cos(a) * rx,
+                      top: 162 + Math.sin(a) * ry,
                       translate: "-50% -50%",
                     }}
                   >
@@ -152,7 +153,15 @@ export const Scene02AlwaysOn: React.FC = () => {
                 );
               })}
               {/* core (agent, once lifted) */}
-              <div style={{ opacity: lift }}>
+              <div
+                style={{
+                  position: "absolute",
+                  left: 220,
+                  top: 162,
+                  translate: "-50% -50%",
+                  opacity: lift,
+                }}
+              >
                 <Node
                   size={44}
                   color={C.color.orangeHot}
@@ -193,7 +202,7 @@ export const Scene02AlwaysOn: React.FC = () => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                background: `rgba(255,255,255,${0.03 + screenLit * 0.04})`,
+                background: `rgba(23,19,16,${0.04 + (1 - screenLit) * 0.06})`,
                 borderColor: powerOff > 0.5 ? C.color.glassStroke : C.color.glassStrokeHot,
               }}
             >
@@ -263,7 +272,11 @@ export const Scene02AlwaysOn: React.FC = () => {
           <Heading
             size={C.type.hero}
             gradient
-            style={{ opacity: headIn, translate: `0px ${(1 - headIn) * 20}px` }}
+            style={{
+              opacity: headIn,
+              translate: `0px ${(1 - headIn) * 20}px`,
+              wordSpacing: 24,
+            }}
           >
             Always On
           </Heading>

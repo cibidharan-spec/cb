@@ -19,14 +19,15 @@ export const Glass: React.FC<
           ? C.color.glassStrokeHot
           : C.color.glassStroke;
 
+  const depth = "0 20px 46px rgba(24,20,16,0.14)";
   const edgeGlow =
     state === "danger"
-      ? `0 0 34px ${C.color.dangerGlow}`
+      ? `0 0 30px ${C.color.dangerGlow}, ${depth}`
       : state === "success"
-        ? `0 0 34px ${C.color.successGlow}`
+        ? `0 0 30px ${C.color.successGlow}, ${depth}`
         : hot
-          ? `0 0 40px ${C.color.orangeGlow}`
-          : "0 24px 60px rgba(0,0,0,0.55)";
+          ? `0 0 34px ${C.color.orangeGlow}, ${depth}`
+          : depth;
 
   return (
     <div
@@ -34,9 +35,9 @@ export const Glass: React.FC<
         background: C.color.glassFill,
         border: `1px solid ${stroke}`,
         borderRadius: C.radius.lg,
-        boxShadow: `${edgeGlow}, inset 0 1px 0 rgba(255,255,255,0.08)`,
-        backdropFilter: "blur(6px)",
-        WebkitBackdropFilter: "blur(6px)",
+        boxShadow: `${edgeGlow}, inset 0 1px 0 rgba(255,255,255,0.85)`,
+        backdropFilter: "blur(8px)",
+        WebkitBackdropFilter: "blur(8px)",
         ...style,
       }}
     >

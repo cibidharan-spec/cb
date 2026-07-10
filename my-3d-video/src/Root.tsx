@@ -40,7 +40,7 @@ const seq = (items: Array<[number, React.FC]>) => {
 };
 
 const Intro123: React.FC = () => (
-  <AbsoluteFill style={{ backgroundColor: "#07080B" }}>
+  <AbsoluteFill style={{ backgroundColor: "#F4F1EA" }}>
     {seq([
       [S1, Scene01Drop],
       [S2, Scene02AlwaysOn],
@@ -50,7 +50,7 @@ const Intro123: React.FC = () => (
 );
 
 const Intro4to8: React.FC = () => (
-  <AbsoluteFill style={{ backgroundColor: "#07080B" }}>
+  <AbsoluteFill style={{ backgroundColor: "#F4F1EA" }}>
     {seq([
       [S4, Scene04EndsToday],
       [S5, Scene05Cover],
@@ -62,7 +62,7 @@ const Intro4to8: React.FC = () => (
 );
 
 const IntroFull: React.FC = () => (
-  <AbsoluteFill style={{ backgroundColor: "#07080B" }}>
+  <AbsoluteFill style={{ backgroundColor: "#F4F1EA" }}>
     {seq([
       [S1, Scene01Drop],
       [S2, Scene02AlwaysOn],
