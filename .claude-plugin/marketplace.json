@@ -1,0 +1,19 @@
+{
+  "name": "ghost-font-decoder",
+  "owner": {
+    "name": "cibidharan-spec"
+  },
+  "metadata": {
+    "description": "Marketplace hosting the Ghost Font Decoder plugin for Claude Code.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "ghost-font-decoder",
+      "source": "./ghost-font-decoder",
+      "description": "Reveal, decode, and encode text hidden inside invisible Unicode (variation selectors, Unicode tags, zero-width binary).",
+      "version": "0.1.0",
+      "keywords": ["unicode", "security", "steganography", "prompt-injection"]
+    }
+  ]
+}
