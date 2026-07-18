@@ -1,0 +1,19 @@
+{
+  "name": "ghost-font-decoder",
+  "version": "0.1.0",
+  "description": "Reveal, decode, and encode text hidden inside invisible Unicode — variation-selector smuggling, Unicode-tag (ASCII smuggling), and zero-width binary.",
+  "author": {
+    "name": "cibidharan-spec"
+  },
+  "keywords": [
+    "unicode",
+    "steganography",
+    "security",
+    "prompt-injection",
+    "ascii-smuggling",
+    "zero-width",
+    "variation-selectors"
+  ],
+  "commands": "./commands",
+  "skills": "./skills"
+}
