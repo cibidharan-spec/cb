@@ -1,0 +1,7 @@
+out/sub/
+out/at/
+out/loop/
+out/beats/
+node_modules/
+audio/*.wav
+audio/*.mp3
