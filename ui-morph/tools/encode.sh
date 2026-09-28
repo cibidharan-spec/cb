@@ -3,7 +3,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 FF=${FFMPEG:-$(python3 -c "import imageio_ffmpeg as i; print(i.get_ffmpeg_exe())")}
-"$FF" -v error -stats -y \
+"$FF" -v error -y \
   -framerate 240 -i out/sub/%05d.png \
   -i audio/mix.wav \
   -filter_complex "[0:v]format=rgb24,tmix=frames=4:weights='1 1 1 1',select='eq(mod(n\,4)\,3)',setpts=N/(60*TB),format=yuv420p[v]" \

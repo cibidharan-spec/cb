@@ -118,7 +118,7 @@ svg { display: block; overflow: visible; }
 
     <div class="L" id="Lbtn">
       <div class="c row" id="btnLabel">Continue
-        <svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        <svg class="ic" id="btnArrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </div>
     </div>
 
@@ -338,6 +338,8 @@ const shW = track(280, S.map(s => [s[0], s[1], s[0] === 20 ? 'soft' : 'ui']));
 const shH = track(72,  S.map(s => [s[0], s[2], s[0] === 20 ? 'soft' : 'ui']));
 const shR = track(36,  S.map(s => [s[0], s[3]]));
 const shC = trackC(INK, [[11.05, PAPER], [17.0, INK, 'snap'], [24.0, PAPER], [26.0, INK]]);
+// hover: the cursor lands on the button on the downbeat (b0 ≡ b28), leaves on the click
+const btnHover = track(0, [[0.1, 1], [1.0, 0]]);
 const shPress = track(0, [[0.97, 1, 'press'], [1.12, 0, 'press'], [5.97, 1, 'press'], [6.1, 0, 'press'],
                           [16.97, 1, 'press'], [17.12, 0, 'press']]);
 
@@ -358,9 +360,10 @@ const chX = i => -320 + i * 640 / 11, chY = v => 150 - (v - 5) / 15 * 190;
 const CUR = [
   [1.5, 150, 118, 'cur'],                     // drift off the loader
   [4.9, 72, 8, 'cur'],                        // → island, click b6
-  [6.45, 0, 110, 'cur'],                      // → play, click b8
+  [6.8, 0, 110, 'cur'],                       // → play, click b8
   [8.15, -99.5, 24, 'curF'],                  // → progress knob, press b9
-  [9.1, 112, 30, 'drag'],                     // scrub →, release b11
+  [9.1, 118, 30, 'drag'],                     // scrub →
+  [10.2, 100, 27, 'drag'],                    // small correction back, release b11
   [11.1, -22, 2, 'curF'],                     // → slider fill edge, press b12
   [12.05, 220, 5, 'drag'],                    // drag to max (b13)
   [13.0, 304, 10, 'drag'],                    // past max (b14)
@@ -371,7 +374,7 @@ const CUR = [
   [21.3, chX(6), chY(12.4), 'curF'],          // hover July
   [22.3, chX(9), chY(18.9), 'curF'],          // hover October
   [23.4, 236, 252, 'cur'],                    // out of the palette's way
-  [26.6, 58, 12, 'cur'],                      // back onto the button (== first frame)
+  [27.45, 58, 12, 'cur'],                      // back onto the button, lands on the downbeat (== first frame)
 ];
 const curX = track(58, CUR.map(c => [c[0], c[1], c[3]]));
 const curY = track(12, CUR.map(c => [c[0], c[2], c[3]]));
@@ -384,6 +387,7 @@ const SONG = 196;                                   // 3:16
 const P0 = 0.30;
 const playM = track(0, [[8.0, 1], [27.0, 0]]);
 const playPress = track(0, [[7.97, 1, 'press'], [8.1, 0, 'press']]);
+const playHover = track(0, [[7.6, 1], [8.25, 0]]);
 const knobHeld = track(0, [[9.0, 1, 'snap'], [11.0, 0, 'snap']]);
 const progRaw = b => b < 8 ? P0 : P0 + (b - 8) * B / SONG;
 const SCRUB = [9.0, 11.0];
@@ -451,7 +455,7 @@ window.TIMELINE = { beats: T, beat: B, duration: DUR };
 
 // ─── one-time static setup (geometry only; nothing here depends on time) ────
 const el = {};
-['world', 'shape', 'o', 'Lbtn', 'Lload', 'ldArc', 'ldTrack', 'ldCheck', 'Lisland', 'isBars', 'Lplayer', 'plTop', 'plMid', 'plBot',
+['world', 'shape', 'btnArrow', 'o', 'Lbtn', 'Lload', 'ldArc', 'ldTrack', 'ldCheck', 'Lisland', 'isBars', 'Lplayer', 'plTop', 'plMid', 'plBot',
  'plFill', 'plKnob', 'plCur', 'plRem', 'plPlay', 'ppL', 'ppR', 'Lslider', 'slFill', 'slPctB', 'slPctW', 'slClip', 'slIcon', 'slW1', 'slW2',
  'pill', 'tabsBg', 'tabsBase', 'tabsTop', 'Lchart', 'chLine', 'chArea', 'chClipR', 'chX', 'tip', 'tipLine', 'tipDot', 'tipBubble', 'tipA', 'tipB',
  'Lcmdk', 'kSearch', 'kInput', 'kPh', 'kCaret', 'kEsc', 'kDiv', 'kHi', 'kRows', 'Ltoast', 'cursor', 'chHead']
@@ -500,12 +504,15 @@ function seek(t) {
   const r = Math.min(shR(b), h / 2, w / 2);
   const s = el.shape.style;
   s.left = px(sx - w / 2); s.top = px(-h / 2); s.width = px(w); s.height = px(h);
-  s.borderRadius = px(r); s.background = rgb(shC(b));
+  const hv = clamp(btnHover(b)) * vis(b, 27.12, 1.1);
+  const sc = shC(b);
+  s.borderRadius = px(r); s.background = rgb(sc.map(v => Math.round(mix(v, 42, hv))));
   s.transform = `scale(${(1 - 0.035 * shPress(b)).toFixed(5)})`;
   el.o.style.left = px(w / 2); el.o.style.top = px(h / 2);
 
   // button
   show(el.Lbtn, vis(b, 27.12, 1.1));
+  el.btnArrow.style.transform = `translateX(${px(4 * hv)})`;
 
   // loader → check
   const vLoad = vis(b, 1.22, 3.95);
@@ -552,7 +559,7 @@ function seek(t) {
     const m = clamp(playM(b));
     el.ppL.setAttribute('d', quad(PLAY_L, PAUSE_L, m));
     el.ppR.setAttribute('d', quad(PLAY_R, PAUSE_R, m));
-    el.plPlay.style.transform = `scale(${(1 - 0.08 * playPress(b)).toFixed(4)})`;
+    el.plPlay.style.transform = `scale(${(1 + 0.06 * playHover(b) - 0.1 * playPress(b)).toFixed(4)})`;
   }
 
   // volume slider (left edge fixed at -220 in world → -W/2 in content space)
